@@ -15,7 +15,7 @@ struct AircraftData {
     float maxSpeed; // maximum airspeed in knots
 };
 
-enum GearPositon {DOWN, UP}; // DOWN (deployed) or UP (retracted)
+enum GearPositon {DOWN, TRANSITIONING, UP}; // DOWN (deployed) or UP (retracted)
 
 struct Gear {
     GearPositon front;
@@ -47,10 +47,36 @@ struct FlightData {
 
     bool masterWarning;
     bool masterCaution;
+    bool overspeed;
+
     Autopilot autopilot;
+
+    [[nodiscard]] bool isAutopilotActive() const {
+        return autopilot.active;
+    }
+
+    // checks masterCaution, masterWarning, and overspeed
+    [[nodiscard]] bool isAlert() const {
+        return masterCaution || masterWarning || overspeed;
+    }
+
+    // true means extended/down/landing/takeoff/taxi
+    [[nodiscard]] bool isGearDown() const {
+        return gear.front == DOWN && gear.rearLeft == DOWN && gear.rearRight == DOWN;
+    }
 };
 
 // ---------------------------- RACING ---------------------------- //
+
+enum FlagType {NONE, BLUE_FLAG, YELLOW_FLAG, RED_FLAG};
+
+struct VehicleData {
+    string manufacturer; // manufacturer of the car
+    string model; // model of the car
+
+    int rpmMax; // maximum rpm / redline
+    int gearMax; // max gear
+};
 
 struct RacingData {
     int gear; // 0->N , -1->REV
@@ -65,5 +91,9 @@ struct RacingData {
     float delta;
 
     bool abs;
-    bool flag;
+    FlagType flag;
+
+    [[nodiscard]] bool isFlagActive() const {
+        return flag == FlagType::NONE;
+    }
 };

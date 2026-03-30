@@ -32,6 +32,13 @@ struct LEDBar {
     }
 };
 
+// barPin, startIndex, ledCount
+struct LEDZone {
+    uint8_t barPin;
+    uint8_t startIndex;
+    uint8_t ledCount;
+};
+
 struct SpecificLED {
     uint8_t barPin;
     uint8_t ledIndex; // index within the bar for the specific led
@@ -63,6 +70,7 @@ public:
     void updateLEDBar(uint8_t pin, const LEDBar& ledBar);
     void updateOneLED(uint8_t pin, uint8_t ledIndex, const LED& led);
     void updateOneLED(SpecificLED specificLED);
+    void updateLEDZone(LEDZone zone, LED led);
 };
 
 
