@@ -1,9 +1,9 @@
 #ifndef AEROLAP_BASEHARDWARE_H
 #define AEROLAP_BASEHARDWARE_H
 
-#include <FastLED.h>
 #include <array>
 #include <cstdint>
+#include <Adafruit_NeoPixel.h>
 
 
 enum Color {RED, GREEN, BLUE, YELLOW, WHITE};

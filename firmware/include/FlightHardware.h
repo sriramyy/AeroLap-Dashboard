@@ -15,8 +15,9 @@ class FlightHardware {
 
     // led assignments
     // TOP BAR [2] [4] [2]
-
+    const LEDZone someZone = {hw.PIN_TOP_BAR, 0, 2};
     const LEDZone alertZone = {hw.PIN_TOP_BAR, 2, 4};
+    const LEDZone otherZone = {hw.PIN_TOP_BAR, 5, 2};
 
     // BOTTOM BAR [3-gears] [2] [3]
     const LEDZone gearZone = {hw.PIN_TOP_BAR, 0, 3};
@@ -29,15 +30,8 @@ class FlightHardware {
     void updateGearLights();
     // update all alert lights at once for overspeed, master caution, master warning
     void updateAlertLights();
-
-
-
-
-
-
-
-
-
+    // handle all the other lights
+    void updateOtherLights();
 };
 
 
