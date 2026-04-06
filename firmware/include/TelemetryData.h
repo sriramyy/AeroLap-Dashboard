@@ -68,7 +68,7 @@ struct FlightData {
 
 // ---------------------------- RACING ---------------------------- //
 
-enum FlagType {NONE, BLUE_FLAG, YELLOW_FLAG, RED_FLAG};
+enum FlagType {NO_FLAG, BLUE_FLAG, YELLOW_FLAG, RED_FLAG};
 
 struct VehicleData {
     string manufacturer; // manufacturer of the car
@@ -94,6 +94,6 @@ struct RacingData {
     FlagType flag;
 
     [[nodiscard]] bool isFlagActive() const {
-        return flag == FlagType::NONE;
+        return flag != FlagType::NO_FLAG;
     }
 };

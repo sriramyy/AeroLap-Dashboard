@@ -15,12 +15,13 @@ class FlightHardware {
 
     // led assignments
     // TOP BAR [2] [4] [2]
-    const LEDZone someZone = {hw.PIN_TOP_BAR, 0, 2};
-    const LEDZone alertZone = {hw.PIN_TOP_BAR, 2, 4};
-    const LEDZone otherZone = {hw.PIN_TOP_BAR, 5, 2};
+    const LEDZone someZone = {Pin::TOP_BAR, 0, 2};
+    const LEDZone alertZone = {Pin::TOP_BAR, 2, 4};
+    const LEDZone otherZone = {Pin::TOP_BAR, 5, 2};
 
     // BOTTOM BAR [3-gears] [2] [3]
-    const LEDZone gearZone = {hw.PIN_TOP_BAR, 0, 3};
+    const LEDZone gearZone = {Pin::BOTTOM_BAR, 0, 3};
+    const LEDZone speedbrakeZone = {Pin::BOTTOM_BAR, 2, 2};
 
     void updateAllDisplays();
     void updateAllLights();

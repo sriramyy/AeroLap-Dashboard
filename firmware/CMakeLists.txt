@@ -3,7 +3,7 @@ project(AeroLap)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(AeroLap main.cpp
+add_executable(AeroLap src/main.cpp
         src/FlightTelemetry.cpp
         include/FlightTelemetry.h
         src/RacingTelemetry.cpp
