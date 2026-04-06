@@ -45,10 +45,6 @@ def run_bridge():
 
     except Exception as e:
         print(f"\nCRITICAL ERROR: {e}")
-        print("-" * 40)
-        print("Final Troubleshooting Check:")
-        print("1. Did you close the FSUIPC window in FSX?")
-        print("2. Is the Cessna actually on the runway/flying?")
 
 if __name__ == "__main__":
     run_bridge()
