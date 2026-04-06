@@ -1,0 +1,10 @@
+# Ignore Python virtual environments
+bridge/venv32/
+bridge/venv/
+
+# Ignore C++ / ESP32 build artifacts
+**/__pycache__/
+**/.idea/
+**/.vscode/
+build/
+.pio/
