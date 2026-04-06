@@ -1,23 +1,80 @@
 #include <Arduino.h>
-#include "BaseHardware.h"
-#include "Pin.h"
 
+#include "FlightHardware.h"
+#include "../include/FlightTelemetry.h"
+#include "../include/BaseHardware.h"
+#include "../include/Pin.h"
+
+// ------------------- MODE MANAGEMENT -------------------
+enum DeviceMode { FLIGHT, RACING };
+DeviceMode currentMode = FLIGHT;
+
+// ------------------- TELEMETRY OBJECTS -------------------
+FlightTelemetry flightTelem;
 BaseHardware hw;
+FlightHardware flightHW(hw, flightTelem.flightData, flightTelem.aircraftData);
+
+// ------------------- FUNCTION PROTOTYPES -------------------
+void handleFlightLoop();
+void handleRacingLoop();
+void updateFlightHardware();
 
 void setup() {
-    hw.begin();
+    Serial.begin(115200);
 
-    hw.updateOneLED(Pin::TOP_BAR, 0, {true, GREEN});
-    hw.updateOneLED(Pin::TOP_BAR, 1, {true, YELLOW});
-    hw.updateOneLED(Pin::TOP_BAR, 2, {true, GREEN});
+    while (!Serial) {
+        delay(10);
+    }
 
-    // TODO: only showing the decimal
-    hw.updateSegmentDisplay(Pin::LEFT_DIO, 1000, 2);
+    hw.begin(10);
 
-    hw.displayLEDs();
+
+    Serial.println("AEROLAP SYSTEM BOOTED: FLIGHT MODE ACTIVE");
 }
 
 void loop() {
-    // hw.displayLEDs();
+    switch (currentMode) {
+        case FLIGHT:
+            handleFlightLoop();
+            break;
+
+        case RACING:
+            handleRacingLoop();
+            break;
+    }
+
+    hw.displayLEDs();
     hw.displaySegmentDisplays();
+}
+
+// ------------------- FLIGHT MODE LOGIC -------------------
+void handleFlightLoop() {
+    if (Serial.available() >= sizeof(TelemetryPacket)) {
+
+        if (Serial.peek() == 0xAA) {
+
+            TelemetryPacket incoming;
+
+            Serial.readBytes((uint8_t*)&incoming, sizeof(TelemetryPacket));
+
+            if (incoming.magic2 == 0xBB) {
+                flightTelem.updateFromSim(incoming);
+
+                updateFlightHardware();
+            }
+        } else {
+            Serial.read();
+        }
+    }
+}
+
+// ------------------- RACING MODE LOGIC -------------------
+void handleRacingLoop() {
+
+}
+
+// ------------------- HARDWARE DRIVERS -------------------
+void updateFlightHardware() {
+    flightHW.updateAllLights();
+    flightHW.updateAllDisplays();
 }

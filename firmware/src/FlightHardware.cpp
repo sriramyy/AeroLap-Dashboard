@@ -42,21 +42,24 @@ void FlightHardware::updateGearLights() {
 }
 
 void FlightHardware::updateAlertLights() {
-    if (!fd.isAlert()) {
-        hw.updateLEDZone(alertZone, {false, WHITE});
-        return;
-    }
-    if (fd.masterCaution) {
-        hw.updateLEDZone(alertZone, {true, RED});
-        return;
-    }
+    // Determine the "Current Alert State" based on precedence
+    bool isBlinking = (millis() / 250) % 2 == 0; // 4Hz blink rate
+
     if (fd.masterWarning) {
-        hw.updateLEDZone(alertZone, {true, YELLOW});
-        return;
+        // Highest Precedence: Blinking RED
+        hw.updateLEDZone(alertZone, {isBlinking, RED});
     }
-    if (fd.overspeed) {
+    else if (fd.masterCaution) {
+        // Second Precedence: Solid YELLOW
+        hw.updateLEDZone(alertZone, {true, YELLOW});
+    }
+    else if (fd.overspeed) {
+        // Third Precedence: Solid BLUE
         hw.updateLEDZone(alertZone, {true, BLUE});
-        return;
+    }
+    else {
+        // No alerts: Off
+        hw.updateLEDZone(alertZone, {false, NONE});
     }
 }
 
