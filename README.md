@@ -28,7 +28,7 @@ AeroLap utilizes a **binary struct-packing approach** over Serial (USB-C) to ach
 * **Shift Lights:** Adaptive RPM-based LED color gradients.
 * **Race Stats:** Lap time delta, gear indicator, and flag status (Yellow/Blue/Red).
 
-## Firmware Technical Overview
+## ⚙️ Firmware Technical Overview
 The AeroLap firmware is written in C++ using the Arduino framework for the ESP32. It utilizes a layered architecture to separate low-level hardware control from high-level flight logic.
 
 ### Pins
