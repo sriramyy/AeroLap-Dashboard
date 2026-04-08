@@ -16,10 +16,9 @@ void FlightHardware::updateAllDisplays() {
     hw.updateSegmentDisplay(Pin::RIGHT_DIO, formattedAltitude, 2);
 
     // center display is FLAP POSITION
-    // TODO: find a way to get
     int flapPosition = fd.flapPosition;
     bool isFull = fd.flapPosition == ad.flapFull;
-    hw.updateSegmentDisplay(Pin::CENTER_DIO, 0, isFull); // show decimal if flaps are full
+    hw.updateSegmentDisplay(Pin::CENTER_DIO, flapPosition, isFull); // show decimal if flaps are full
 }
 
 void FlightHardware::updateAllLights() {
@@ -42,23 +41,33 @@ void FlightHardware::updateGearLights() {
 }
 
 void FlightHardware::updateAlertLights() {
-    // Determine the "Current Alert State" based on precedence
     bool isBlinking = (millis() / 250) % 2 == 0; // 4Hz blink rate
 
+    // terrain
+    if (fd.gpws) {
+        hw.updateLEDZone(gpwsZone, {isBlinking, YELLOW});
+    }
+
+    // minimums
+    if (fd.minimums) {
+        hw.updateLEDZone(minimumsZone, {true, BLUE});
+    }
+
+    // main alerts
     if (fd.masterWarning) {
-        // Highest Precedence: Blinking RED
+        // hgihest: Blinking RED
         hw.updateLEDZone(alertZone, {isBlinking, RED});
     }
     else if (fd.masterCaution) {
-        // Second Precedence: Solid YELLOW
+        // Solid YELLOW
         hw.updateLEDZone(alertZone, {true, YELLOW});
     }
     else if (fd.overspeed) {
-        // Third Precedence: Solid BLUE
+        // Solid BLUE
         hw.updateLEDZone(alertZone, {true, BLUE});
     }
     else {
-        // No alerts: Off
+        // Off
         hw.updateLEDZone(alertZone, {false, NONE});
     }
 }
@@ -66,5 +75,9 @@ void FlightHardware::updateAlertLights() {
 void FlightHardware::updateOtherLights() {
     // speedbrake lights
     if (fd.speedbrakes) hw.updateLEDZone(speedbrakeZone, {true, BLUE});
+
+    // flap transition zone
+    // check if transitioning
+    
 
 }

@@ -13,8 +13,8 @@ class FlightHardware {
     // TOP BAR [2] [4] [2]
     const LEDZone apZone = {Pin::TOP_BAR, 0, 2};
     const LEDZone alertZone = {Pin::TOP_BAR, 2, 4};
-    const LEDZone gpwsZone = {Pin::TOP_BAR, 6, 1}; // terrain
-    const LEDZone minimumsZone = {Pin::TOP_BAR, 7, 1}; // 200 ft
+    const LEDZone gpwsZone = {Pin::TOP_BAR, 6, 1}; // terrain, also updated in alert function
+    const LEDZone minimumsZone = {Pin::TOP_BAR, 7, 1}; // 200 ft, also updated in alert function
 
     // BOTTOM BAR [3-gears] [2] [3]
     const LEDZone gearZone = {Pin::BOTTOM_BAR, 0, 3};
@@ -32,7 +32,7 @@ public:
     // helper light functions
     // update hte gear lights individually based on if transitioning, down, up
     void updateGearLights();
-    // update all alert lights at once for overspeed, master caution, master warning
+    // update all alert lights at once for overspeed, master caution, master warning (also for GPWS)
     void updateAlertLights();
     //
     // handle all the other lights

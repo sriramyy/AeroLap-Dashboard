@@ -42,12 +42,16 @@ struct FlightData {
     float heading;
 
     int flapPosition;
+    bool flapsMoving;
     Gear gear;
     bool speedbrakes; // true->extended (active)
 
     bool masterWarning;
     bool masterCaution;
     bool overspeed;
+    bool gpws; // terrain warning
+
+    bool minimums; // calc from radio alt (200)
 
     Autopilot autopilot;
 

@@ -29,18 +29,19 @@ struct __attribute__((packed)) TelemetryPacket {
     uint8_t magic2 = 0xBB;
 
     // Floats (4 bytes each)
-    float alt_ft, speed, v_speed;
+    float alt_ft, speed, v_speed, radio_alt; // TODO: add radio alt in bridge
     float pitch, roll, heading;
 
     // Integers (4 bytes)
-    int32_t flap_pos;
+    int16_t flap_handle; // Commanded position (0-16383)
+    int16_t flap_actual; // Actual physical position (0-16383)
 
     // individual gear position
     uint16_t gear_nose, gear_left, gear_right;
 
     // Booleans (1 byte each in this context)
     bool speedbrakes_ext;
-    bool masterWarning, masterCaution, overspeed;
+    bool masterWarning, masterCaution, overspeed, gpws; // TODO: add this in bridge
     bool ap_active, ap_nav_mode;
 
     // Autopilot Floats

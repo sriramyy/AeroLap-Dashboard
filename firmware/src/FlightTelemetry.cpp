@@ -12,17 +12,23 @@ void FlightTelemetry::updateFromSim(TelemetryPacket &incoming) {
     flightData.heading = incoming.heading;
 
     // convert flap position to int from 0-8
-    flightData.flapPosition = convertToFlapPosition(incoming.flap_pos);
+    flightData.flapPosition = convertToFlapPosition(incoming.flap_actual);
+    flightData.flapsMoving = abs(incoming.flap_actual - incoming.flap_handle) > 50;
 
     // convert gear pos
     flightData.gear.front = convertToGearPosition(incoming.gear_nose);
     flightData.gear.rearLeft = convertToGearPosition(incoming.gear_left);
     flightData.gear.rearRight = convertToGearPosition(incoming.gear_right);
 
+    // alerts
     flightData.masterWarning = incoming.masterWarning;
     flightData.masterCaution = incoming.masterCaution;
     flightData.overspeed = incoming.overspeed;
+    flightData.gpws = incoming.gpws;
 
+    flightData.minimums = incoming.radio_alt <= 200; // trigger below 200 ft
+
+    // autopilot
     flightData.autopilot = {incoming.ap_active, incoming.ap_nav_mode, incoming.ap_heading, incoming.ap_alt};
 }
 

@@ -1,6 +1,6 @@
 import time
 import struct
-import serial  # You'll need: pip install pyserial
+import serial  
 from fsuipc import FSUIPC
 from dataclasses import dataclass
 
