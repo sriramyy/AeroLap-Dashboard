@@ -40,7 +40,7 @@ struct __attribute__((packed)) TelemetryPacket {
     uint16_t gear_nose, gear_left, gear_right;
 
     // Booleans (1 byte each in this context)
-    bool speedbrakes_ext;
+    bool speedbrakes_ext, parking_brake;
     bool masterWarning, masterCaution, overspeed, gpws;
     bool ap_active, ap_nav_mode;
 

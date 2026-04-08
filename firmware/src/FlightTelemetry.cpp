@@ -20,6 +20,9 @@ void FlightTelemetry::updateFromSim(TelemetryPacket &incoming) {
     flightData.gear.rearLeft = convertToGearPosition(incoming.gear_left);
     flightData.gear.rearRight = convertToGearPosition(incoming.gear_right);
 
+    // parkign brake
+    flightData.parkingBrake = incoming.parking_brake;
+
     // alerts
     flightData.masterWarning = incoming.masterWarning;
     flightData.masterCaution = incoming.masterCaution;

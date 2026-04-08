@@ -24,6 +24,8 @@ void FlightHardware::updateAllDisplays() {
 void FlightHardware::updateAllLights() {
     updateAlertLights();
     updateGearLights();
+    updateAutopilotLights();
+    updateOtherLights();
 }
 
 void FlightHardware::updateGearLights() {
@@ -43,15 +45,11 @@ void FlightHardware::updateGearLights() {
 void FlightHardware::updateAlertLights() {
     bool isBlinking = (millis() / 250) % 2 == 0; // 4Hz blink rate
 
-    // terrain
-    if (fd.gpws) {
-        hw.updateLEDZone(gpwsZone, {isBlinking, YELLOW});
-    }
+    // terrain, need to blink
+    hw.updateLEDZone(gpwsZone, {fd.gpws && isBlinking, fd.gpws ? YELLOW : NONE});
 
     // minimums
-    if (fd.minimums) {
-        hw.updateLEDZone(minimumsZone, {true, BLUE});
-    }
+    hw.updateLEDZone(minimumsZone, {fd.minimums, fd.minimums ? BLUE : NONE});
 
     // main alerts
     if (fd.masterWarning) {
@@ -72,17 +70,43 @@ void FlightHardware::updateAlertLights() {
     }
 }
 
-void FlightHardware::updateOtherLights() {
-    // speedbrake lights
-    if (fd.speedbrakes) hw.updateLEDZone(speedbrakeZone, {true, BLUE});
+void FlightHardware::updateAutopilotLights() {
+    bool isBlinking = (millis() / 200) % 2 == 0;
+    uint32_t now = millis();
 
-    // flap transition zone
-    // check if transitioning
+    if (lastApState == true && fd.autopilot.active == false) {
+        apDisconnectTime = now;
+    }
+    lastApState = fd.autopilot.active;
 
-
+    if (fd.autopilot.active) {
+        // ap on
+        hw.updateLEDZone(apZone, {true, GREEN});
+    }
+    // can change this to edit disconnect flashing time
+    else if (now - apDisconnectTime < 2000 && apDisconnectTime != 0) {
+        // ap just turned off
+        hw.updateLEDZone(apZone, {isBlinking, RED});
+    }
+    else {
+        // ap off
+        hw.updateLEDZone(apZone, {false, NONE});
+    }
 }
 
-void FlightHardware::printTesting() {
+
+void FlightHardware::updateOtherLights() {
+    // speedbrake lights
+    hw.updateLEDZone(speedbrakeZone, {fd.speedbrakes, fd.speedbrakes ? BLUE : NONE});
+
+    // flap transition zone
+    hw.updateLEDZone(flapsTransitioningZone, {fd.flapsMoving, fd.flapsMoving ? YELLOW : NONE});
+
+    // parking brake
+    hw.updateLEDZone(parkingBrakeZone, {fd.parkingBrake, fd.parkingBrake ? RED : NONE});
+}
+
+void FlightHardware::printTesting() const {
     Serial.println("\n--- AEROLAP TELEMETRY DEBUG ---");
 
     // main

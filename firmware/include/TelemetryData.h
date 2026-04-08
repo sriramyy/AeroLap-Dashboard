@@ -45,6 +45,7 @@ struct FlightData {
     bool flapsMoving;
     Gear gear;
     bool speedbrakes; // true->extended (active)
+    bool parkingBrake;
 
     bool masterWarning;
     bool masterCaution;

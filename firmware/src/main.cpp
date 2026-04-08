@@ -54,11 +54,11 @@ void loop() {
         case RACING:
             handleRacingLoop();
             break;
+
         case TESTING:
             handleTestingLoop();
             break;
     }
-
 
     // RENDER all changes to the actual outputs
     hw.displayLEDs();
@@ -73,7 +73,7 @@ void handleFlightLoop() {
         // check first magic
         if (Serial.peek() == 0xAA) {
             TelemetryPacket incoming;
-            Serial.readBytes((uint8_t*)&incoming, sizeof(TelemetryPacket));
+            Serial.readBytes(reinterpret_cast<uint8_t *>(&incoming), sizeof(TelemetryPacket));
 
             // check second magic
             if (incoming.magic2 == 0xBB) {
