@@ -28,6 +28,47 @@ AeroLap utilizes a **binary struct-packing approach** over Serial (USB-C) to ach
 * **Shift Lights:** Adaptive RPM-based LED color gradients.
 * **Race Stats:** Lap time delta, gear indicator, and flag status (Yellow/Blue/Red).
 
+## Firmware Technical Overview
+The AeroLap firmware is written in C++ using the Arduino framework for the ESP32. It utilizes a layered architecture to separate low-level hardware control from high-level flight logic.
+
+### Pins
+Hardware assignments are centralized in `Pin.h` to ensure easy modification for different ESP32 board layouts. Key assignments include:
+
+### BaseHardware
+The `BaseHardware` class acts as the **Hardware Abstraction Layer (HAL)**. It manages the raw interface with external libraries and handles memory buffering for the outputs.
+
+* **Abstraction:** Wraps `Adafruit_NeoPixel` and `DIYables_4Digit7Segment_74HC595` logic.
+* **Buffering:** Maintains internal `LEDBar` and `DisplayBuffer` structures. This allows the system to calculate changes in memory and "render" them to the physical hardware in a single batch call, preventing flickering.
+* **Methods:** Provides specialized functions like `updateLEDZone()` and `updateSegmentDisplay()` that allow higher-level classes to manipulate specific hardware regions by index rather than raw pin numbers.
+
+### FlightHardware
+`FlightHardware` contains the high-level behavioral logic of the cockpit. It maps flight-specific states (e.g., "Gears Transitioning") to physical colors and numbers.
+* **Alert Precedence:** Implements a hierarchy for the `alertZone`. A Master Warning (Red Blink) will override a Master Caution (Yellow), ensuring the most critical information is always prioritized.
+* **LED Mapping:**
+
+| Index | Zone / Function | Logic & Color |
+| :--- | :--- | :--- |
+| **0, 1** | **Autopilot Master** | **Green**: Active \| **Red Blink (3s)**: Disconnected |
+| **2-5** | **Priority Alerts** | **Red Blink**: Master Warning \| **Yellow**: Caution \| **Blue**: Overspeed |
+| **6** | **GPWS / Terrain** | **Yellow Blink**: Terrain/Sink Rate warning active |
+| **7** | **Minimums (DH)** | **Yellow**: Aircraft is below 200ft AGL (Decision Height) |
+| **--** | **--- Bottom Bar ---** | **----------------------------------------------** |
+| **0-2** | **Landing Gear** | **Green**: Locked Down \| **Yellow**: In Transition |
+| **3** | **Speedbrake Armed**| **White**: Spoilers armed for auto-deployment |
+| **4** | **Speedbrake Ext** | **Yellow**: Spoilers/Speedbrakes physically deployed |
+| **5** | **Flap Transition** | **Yellow**: Flap surfaces are currently in motion |
+| **6** | **Parking Brake** | **Red**: Parking brake is engaged |
+| **7** | **Data Heartbeat** | **Blue Blink**: Valid telemetry packet received |
+
+### FlightTelemetry
+The `FlightTelemetry` class manages the communication contract between the Python Bridge and the ESP32.
+
+* **Binary Protocol:** Uses a packed 55-byte C-struct to minimize overhead. Data is transmitted in a fixed-width binary format to eliminate the latency of string parsing.
+* **Synchronization:** Implements a "Magic Byte" handshake. The system peeks for `0xAA` (Header) and validates `0xBB` (Footer) to ensure the serial buffer is perfectly aligned before processing. Throws it out if it is not formatted correctly to avoid processing junk data. 
+* **State Conversion:** Converts raw simulator values into usable flight enums:
+    * **Gear:** `0` or `16383` are mapped to `UP` or `DOWN`, while intermediate values trigger the `TRANSITIONING` state.
+    * **Flaps:** Scaled from raw sim units ($0$ to $16383$) to a standard $0$ to $8$ index.
+
 ## 💻 Tech Stack
 
 * **Firmware:** C++, Arduino Core (ESP32), Adafruit NeoPixel, DIYables 7-Segment.
