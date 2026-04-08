@@ -78,6 +78,47 @@ void FlightHardware::updateOtherLights() {
 
     // flap transition zone
     // check if transitioning
-    
 
+
+}
+
+void FlightHardware::printTesting() {
+    Serial.println("\n--- AEROLAP TELEMETRY DEBUG ---");
+
+    // main
+    Serial.print("SPD: "); Serial.print(fd.airspeed, 1); Serial.print(" kts | ");
+    Serial.print("ALT: "); Serial.print(fd.altitude, 0); Serial.print(" ft | ");
+    Serial.println();
+
+    // control srf
+    Serial.print("FLAPS: "); Serial.print(fd.flapPosition);
+    Serial.print(fd.flapsMoving ? " [MOVING]" : " [STABLE]");
+    Serial.print(" | GEAR: ");
+
+    // print gear
+    auto printGear = [](GearPositon p) {
+        if (p == DOWN) Serial.print("DWN ");
+        else if (p == UP) Serial.print("UP  ");
+        else Serial.print("TRN ");
+    };
+    printGear(fd.gear.front); printGear(fd.gear.rearLeft); printGear(fd.gear.rearRight);
+    Serial.println();
+
+    // alets
+    Serial.print("ALERTS: ");
+    if (fd.masterWarning) Serial.print("[!! WARN !!] ");
+    if (fd.masterCaution) Serial.print("[! CAUTION !] ");
+    if (fd.overspeed)     Serial.print("[OVERSPEED] ");
+    if (fd.minimums)     Serial.print("[MINIMUMS] ");
+    if (fd.gpws)         Serial.print("[TERRAIN] ");
+    if (!fd.masterWarning && !fd.masterCaution && !fd.overspeed) Serial.print("CLEAN");
+    Serial.println();
+
+    // ap
+    Serial.print("AP: "); Serial.print(fd.autopilot.active ? "ON" : "OFF");
+    Serial.print(" | MODE"); Serial.print(fd.autopilot.nav ? "NAV" : "GPS");
+    Serial.print(" | HDG: "); Serial.print(fd.autopilot.heading, 0);
+    Serial.print(" | ALT: "); Serial.println(fd.autopilot.altitude, 0);
+
+    Serial.println("-------------------------------");
 }

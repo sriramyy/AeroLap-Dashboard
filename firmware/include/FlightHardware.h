@@ -37,6 +37,9 @@ public:
     //
     // handle all the other lights
     void updateOtherLights();
+
+    // testing functions
+    void printTesting();
 };
 
 

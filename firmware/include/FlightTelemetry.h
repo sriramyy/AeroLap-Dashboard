@@ -6,7 +6,7 @@
 // ---------------- SENDING COMMANDS TO THE SIM ----------------
 // Unique IDs for every action you want to perform in the sim
 enum CommandID : uint8_t {
-    NONE = 0,
+    CMD_NONE = 0,
     AP_MASTER_SET = 1,
     AP_HDG_SET = 2,
     AP_ALT_SET = 3,
@@ -29,7 +29,7 @@ struct __attribute__((packed)) TelemetryPacket {
     uint8_t magic2 = 0xBB;
 
     // Floats (4 bytes each)
-    float alt_ft, speed, v_speed, radio_alt; // TODO: add radio alt in bridge
+    float alt_ft, speed, v_speed, radio_alt;
     float pitch, roll, heading;
 
     // Integers (4 bytes)
@@ -41,7 +41,7 @@ struct __attribute__((packed)) TelemetryPacket {
 
     // Booleans (1 byte each in this context)
     bool speedbrakes_ext;
-    bool masterWarning, masterCaution, overspeed, gpws; // TODO: add this in bridge
+    bool masterWarning, masterCaution, overspeed, gpws;
     bool ap_active, ap_nav_mode;
 
     // Autopilot Floats
@@ -70,9 +70,9 @@ private:
     void pushCommand(CommandID commandID, float value);
 
     // helper for gear conversion
-    GearPositon convertToGearPosition(uint16_t raw_pos);
+    static GearPositon convertToGearPosition(uint16_t raw_pos);
     // helper for flap position (0-8)
-    int convertToFlapPosition(uint16_t raw_pos);
+    static int convertToFlapPosition(uint16_t raw_pos);
 
 };
 

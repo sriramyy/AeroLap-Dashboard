@@ -7,7 +7,10 @@
 namespace Pin {
     // constexpr tells the compiler to swap these at compile-time.
     // saves memory
-    
+
+    // onboard led
+    constexpr uint8_t ONBOARD_LED = 2;
+
     // LED Bars
     constexpr uint8_t TOP_BAR    = 13;
     constexpr uint8_t BOTTOM_BAR = 12;
