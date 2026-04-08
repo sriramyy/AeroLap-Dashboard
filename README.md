@@ -2,6 +2,7 @@
 
 **AeroLap** is a high-performance, dual-purpose telemetry dashboard designed for flight simulators and racing titles. By bridging real-time simulation data to an ESP32-powered hardware interface, AeroLap provides a tactile, "glanceable" dashboard system and digital instrument cluster for immersive gameplay.
 
+_TODO: fix some technical mismatches bw code and readme_
 ## 🚀 Overview
 
 The project consists of two primary components:
