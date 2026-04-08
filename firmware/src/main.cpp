@@ -31,6 +31,12 @@ void updateFlightHardware();
 
 void setup() {
     Serial.begin(115200);
+    pinMode(Pin::ONBOARD_LED, OUTPUT);
+
+    // onboard flash to make sure working
+    digitalWrite(Pin::ONBOARD_LED, HIGH);
+    delay(3000);
+    digitalWrite(Pin::ONBOARD_LED, LOW);
 
     while (!Serial) {
         delay(10);
@@ -80,7 +86,7 @@ void handleFlightLoop() {
                 flightTelem.updateFromSim(incoming);
                 updateFlightHardware();
 
-                // toggle onboard whenever packet comes
+                // toggle onboard whenever packet comes (will look like its flashing quickly if wokring)
                 digitalWrite(Pin::ONBOARD_LED, !digitalRead(Pin::ONBOARD_LED));
             }
         } else {

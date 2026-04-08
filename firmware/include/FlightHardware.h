@@ -10,13 +10,13 @@ class FlightHardware {
     AircraftData& ad;
 
     // led assignments
-    // TOP BAR [2] [4] [2]
+    // TOP BAR [2] [4] [1] [1]
     const LEDZone apZone = {Pin::TOP_BAR, 0, 2};
     const LEDZone alertZone = {Pin::TOP_BAR, 2, 4};
     const LEDZone gpwsZone = {Pin::TOP_BAR, 6, 1}; // terrain, also updated in alert function
     const LEDZone minimumsZone = {Pin::TOP_BAR, 7, 1}; // 200 ft, also updated in alert function
 
-    // BOTTOM BAR [3-gears] [2] [3]
+    // BOTTOM BAR [3-gears] [2] [1] [1] [x]
     const LEDZone gearZone = {Pin::BOTTOM_BAR, 0, 3};
     const LEDZone speedbrakeZone = {Pin::BOTTOM_BAR, 3, 2};
     const LEDZone flapsTransitioningZone = {Pin::BOTTOM_BAR, 5, 1};

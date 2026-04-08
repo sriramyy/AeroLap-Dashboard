@@ -32,9 +32,8 @@ struct __attribute__((packed)) TelemetryPacket {
     float alt_ft, speed, v_speed, radio_alt;
     float pitch, roll, heading;
 
-    // Integers (4 bytes)
-    int16_t flap_handle; // Commanded position (0-16383)
-    int16_t flap_actual; // Actual physical position (0-16383)
+    // Integers (2 bytes)
+    int16_t flaps_raw; // (0-16383)
 
     // individual gear position
     uint16_t gear_nose, gear_left, gear_right;
@@ -42,7 +41,8 @@ struct __attribute__((packed)) TelemetryPacket {
     // Booleans (1 byte each in this context)
     bool speedbrakes_ext, parking_brake;
     bool masterWarning, masterCaution, overspeed, gpws;
-    bool ap_active, ap_nav_mode;
+    bool ap_active;
+    bool flaps_moving;
 
     // Autopilot Floats
     float ap_heading, ap_alt;
@@ -75,8 +75,6 @@ private:
     static int convertToFlapPosition(uint16_t raw_pos);
 
 };
-
-
 
 
 #endif //AEROLAP_FLIGHTTELEMETRY_H

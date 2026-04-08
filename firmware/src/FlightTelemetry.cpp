@@ -12,8 +12,8 @@ void FlightTelemetry::updateFromSim(TelemetryPacket &incoming) {
     flightData.heading = incoming.heading;
 
     // convert flap position to int from 0-8
-    flightData.flapPosition = convertToFlapPosition(incoming.flap_actual);
-    flightData.flapsMoving = abs(incoming.flap_actual - incoming.flap_handle) > 50;
+    flightData.flapPosition = convertToFlapPosition(incoming.flaps_raw);
+    flightData.flapsMoving = incoming.flaps_moving;
 
     // convert gear pos
     flightData.gear.front = convertToGearPosition(incoming.gear_nose);
@@ -32,7 +32,7 @@ void FlightTelemetry::updateFromSim(TelemetryPacket &incoming) {
     flightData.minimums = incoming.radio_alt <= 200; // trigger below 200 ft
 
     // autopilot
-    flightData.autopilot = {incoming.ap_active, incoming.ap_nav_mode, incoming.ap_heading, incoming.ap_alt};
+    flightData.autopilot = {incoming.ap_active, incoming.ap_heading, incoming.ap_alt};
 }
 
 void FlightTelemetry::updateAutopilotHeading(float heading) {
@@ -66,3 +66,4 @@ int FlightTelemetry::convertToFlapPosition(uint16_t raw_pos) {
 
     return (int)((raw_pos * 8 + 8191) / 16383);
 }
+

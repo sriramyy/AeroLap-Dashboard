@@ -25,7 +25,6 @@ struct Gear {
 
 struct Autopilot {
     bool active;
-    bool nav; // true->nav , false->gps
 
     float heading;
     float altitude;

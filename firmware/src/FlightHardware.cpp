@@ -140,7 +140,6 @@ void FlightHardware::printTesting() const {
 
     // ap
     Serial.print("AP: "); Serial.print(fd.autopilot.active ? "ON" : "OFF");
-    Serial.print(" | MODE"); Serial.print(fd.autopilot.nav ? "NAV" : "GPS");
     Serial.print(" | HDG: "); Serial.print(fd.autopilot.heading, 0);
     Serial.print(" | ALT: "); Serial.println(fd.autopilot.altitude, 0);
 
