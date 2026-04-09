@@ -43,7 +43,7 @@ void FlightHardware::updateGearLights() {
 }
 
 void FlightHardware::updateAlertLights() {
-    bool isBlinking = (millis() / 250) % 2 == 0; // 4Hz blink rate
+    bool isBlinking = (millis() / 125) % 2 == 0;
 
     // terrain, need to blink
     hw.updateLEDZone(gpwsZone, {fd.gpws && isBlinking, fd.gpws ? YELLOW : NONE});
@@ -53,19 +53,15 @@ void FlightHardware::updateAlertLights() {
 
     // main alerts
     if (fd.masterWarning) {
-        // hgihest: Blinking RED
         hw.updateLEDZone(alertZone, {isBlinking, RED});
     }
     else if (fd.masterCaution) {
-        // Solid YELLOW
-        hw.updateLEDZone(alertZone, {true, YELLOW});
+        hw.updateLEDZone(alertZone, {true, ORANGE});
     }
     else if (fd.overspeed) {
-        // Solid BLUE
         hw.updateLEDZone(alertZone, {true, BLUE});
     }
     else {
-        // Off
         hw.updateLEDZone(alertZone, {false, NONE});
     }
 }

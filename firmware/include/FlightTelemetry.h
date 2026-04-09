@@ -40,7 +40,7 @@ struct __attribute__((packed)) TelemetryPacket {
 
     // Booleans (1 byte each in this context)
     bool speedbrakes_ext, parking_brake;
-    bool masterWarning, masterCaution, overspeed, gpws;
+    bool masterWarning, masterCaution, overspeed, gpws; // gpws ignored, done manually
     bool ap_active;
     bool flaps_moving;
 
@@ -73,6 +73,8 @@ private:
     static GearPositon convertToGearPosition(uint16_t raw_pos);
     // helper for flap position (0-8)
     static int convertToFlapPosition(uint16_t raw_pos);
+    // helper for gpws
+    bool determineGPWS(float ralt, float vs, uint16_t flaps_raw);
 
 };
 

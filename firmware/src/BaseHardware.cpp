@@ -46,6 +46,45 @@ void BaseHardware::displaySegmentDisplays() {
     rightDisplay.loop();
 }
 
+void BaseHardware::startupSequence() {
+    updateOneLED(Pin::TOP_BAR, 0, {true, Color::WHITE});
+    for (int i = 1; i < 9; i++) {
+        updateOneLED(Pin::TOP_BAR, 1, {i > 1, Color::YELLOW});
+        updateOneLED(Pin::TOP_BAR, 2, {i > 2, Color::ORANGE});
+        updateOneLED(Pin::TOP_BAR, 3, {i > 3, Color::RED});
+        updateOneLED(Pin::TOP_BAR, 4, {i > 4, Color::PINK});
+        updateOneLED(Pin::TOP_BAR, 5, {i > 5, Color::CYAN});
+        updateOneLED(Pin::TOP_BAR, 6, {i > 6, Color::BLUE});
+        updateOneLED(Pin::TOP_BAR, 7, {i > 7, Color::GREEN});
+
+        updateSegmentDisplay(Pin::LEFT_DIO, i*111, i % 2 == 0);
+        updateSegmentDisplay(Pin::RIGHT_DIO, i*111, i % 2 == 0);
+
+        displayLEDs();
+        displaySegmentDisplays();
+
+        delay(100);
+    }
+    delay(500);
+
+    // turn off all
+    updateLEDZone({Pin::TOP_BAR, 0, 8} , {false, NONE});
+    updateSegmentDisplay(Pin::LEFT_DIO, 0, false);
+    updateSegmentDisplay(Pin::RIGHT_DIO, 0, false);
+
+    displayLEDs();
+    displaySegmentDisplays();
+}
+
+void BaseHardware::flashLightPin(uint16_t pin, uint8_t flashNum, uint32_t delayTime) {
+    for (int i = 0; i < flashNum; i++) {
+        digitalWrite(pin, HIGH);
+        delay(delayTime);
+        digitalWrite(pin, LOW);
+        if (i < flashNum - 1) delay(delayTime);
+    }
+}
+
 
 void BaseHardware::updateSegmentDisplay(uint8_t pin, int value, int decimalIndex) {
     DIYables_4Digit7Segment_74HC595* targetDisplay;

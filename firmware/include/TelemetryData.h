@@ -21,6 +21,10 @@ struct Gear {
     GearPositon front;
     GearPositon rearLeft;
     GearPositon rearRight;
+
+    bool allDown() const {
+        return front == DOWN && rearLeft == DOWN && rearRight == DOWN;
+    }
 };
 
 struct Autopilot {
@@ -64,10 +68,6 @@ struct FlightData {
         return masterCaution || masterWarning || overspeed;
     }
 
-    // true means extended/down/landing/takeoff/taxi
-    [[nodiscard]] bool isGearDown() const {
-        return gear.front == DOWN && gear.rearLeft == DOWN && gear.rearRight == DOWN;
-    }
 };
 
 // ---------------------------- RACING ---------------------------- //

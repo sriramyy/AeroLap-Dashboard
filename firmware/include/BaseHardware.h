@@ -7,7 +7,7 @@
 #include <DIYables_4Digit7Segment_74HC595.h>
 #include "Pin.h"
 
-enum Color {RED, GREEN, BLUE, YELLOW, WHITE, NONE};
+enum Color {RED, GREEN, BLUE, YELLOW, WHITE, ORANGE, PINK, MAGENTA, CYAN, NONE};
 
 struct LED {
     bool on;
@@ -23,6 +23,10 @@ struct LED {
             case BLUE:   return Adafruit_NeoPixel::Color(0, 0, 255);
             case YELLOW: return Adafruit_NeoPixel::Color(255, 255, 0);
             case WHITE:  return Adafruit_NeoPixel::Color(255, 255, 255);
+            case ORANGE:  return Adafruit_NeoPixel::Color(255, 120, 0);
+            case PINK:    return Adafruit_NeoPixel::Color(255, 100, 150);
+            case MAGENTA: return Adafruit_NeoPixel::Color(255, 0, 255);
+            case CYAN:    return Adafruit_NeoPixel::Color(0, 255, 255);
             default:     return 0;
         }
     }
@@ -103,12 +107,21 @@ public:
     void displayLEDs();
     void displaySegmentDisplays();
 
+    // simple startup to verify all ocmponents working
+    void startupSequence();
+
+    // flash a pin, mainly for onboard LED
+    void flashLightPin(uint16_t pin, uint8_t flashNum, uint32_t delayTime);
+
     // update internal values
     void updateSegmentDisplay(uint8_t pin, int value);
     void updateSegmentDisplay(uint8_t pin, int value, int decimalIndex);
+    // update the relevant LED bar, can do as a list of LEDs
     void updateLEDBar(uint8_t pin, const LEDBar& ledBar);
+    // update just one led
     void updateOneLED(uint8_t pin, uint8_t ledIndex, const LED& led);
     void updateOneLED(const SpecificLED &specificLED);
+    // update an entire led zone as the same
     void updateLEDZone(LEDZone zone, LED led);
 
     // helper functions

@@ -22,17 +22,22 @@ void FlightTelemetry::updateFromSim(TelemetryPacket &incoming) {
 
     // parkign brake
     flightData.parkingBrake = incoming.parking_brake;
+    // speed brake
+    flightData.speedbrakes = incoming.speedbrakes_ext;
 
     // alerts
     flightData.masterWarning = incoming.masterWarning;
     flightData.masterCaution = incoming.masterCaution;
     flightData.overspeed = incoming.overspeed;
-    flightData.gpws = incoming.gpws;
 
-    flightData.minimums = incoming.radio_alt <= 200; // trigger below 200 ft
+    // minimums, trigger below the ft
+    flightData.minimums = incoming.radio_alt <= 400 && incoming.radio_alt != 0;
 
     // autopilot
     flightData.autopilot = {incoming.ap_active, incoming.ap_heading, incoming.ap_alt};
+
+    // calc gpws manually
+    flightData.gpws = determineGPWS(incoming.radio_alt, incoming.v_speed, incoming.flaps_raw);
 }
 
 void FlightTelemetry::updateAutopilotHeading(float heading) {
@@ -65,5 +70,36 @@ int FlightTelemetry::convertToFlapPosition(uint16_t raw_pos) {
     if (raw_pos >= 16383) return 8; // full
 
     return (int)((raw_pos * 8 + 8191) / 16383);
+}
+
+bool FlightTelemetry::determineGPWS(float ralt, float vs, uint16_t flaps_raw) {
+
+    // sink rate
+    // If you're dropping faster than 2,500 fpm while below 2,500 ft AGL
+    if (ralt > 20 && ralt < 2500 && vs < -2500) {
+        return true;
+    }
+
+    // too low, gear
+    // If you're below 500 ft AGL and gears aren't fully down (16383 is full down)
+    if (ralt > 20 && ralt < 500) {
+        if (!flightData.gear.allDown()) {
+            return true;
+        }
+    }
+
+    // too low, flaps
+    // If you're below 250 ft AGL and flaps aren't at a landing setting
+    if (ralt > 20 && ralt < 250 && flaps_raw < 5000) {
+        return true;
+    }
+
+    // pull up
+    // If your sink rate is extremely aggressive (e.g., > 4,000 fpm) near the ground
+    if (ralt > 20 && ralt < 1000 && vs < -4000) {
+        return true;
+    }
+
+    return false;
 }
 

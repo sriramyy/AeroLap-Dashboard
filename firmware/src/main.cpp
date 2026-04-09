@@ -8,14 +8,6 @@
 // ------------------- MODE MANAGEMENT -------------------
 enum DeviceMode { FLIGHT, RACING, TESTING };
 
-// helper to convert to a string
-string deviceModeToString(const DeviceMode mode) {
-    if (mode == FLIGHT) return "FLIGHT";
-    if (mode == RACING) return "RACING";
-    if (mode == TESTING) return "[ TESTING ]";
-    return "null";
-}
-
 DeviceMode currentMode = FLIGHT;
 
 // ------------------- TELEMETRY OBJECTS -------------------
@@ -34,20 +26,26 @@ void setup() {
     pinMode(Pin::ONBOARD_LED, OUTPUT);
 
     // onboard flash to make sure working
-    digitalWrite(Pin::ONBOARD_LED, HIGH);
-    delay(3000);
-    digitalWrite(Pin::ONBOARD_LED, LOW);
+    hw.flashLightPin(Pin::ONBOARD_LED, 1, 2000);
 
     while (!Serial) {
+        // turn on while triyng to connect to serial port
+        digitalWrite(Pin::ONBOARD_LED, HIGH);
         delay(10);
     }
 
+    digitalWrite(Pin::ONBOARD_LED, LOW);
+
+    // flash to indicate connected to serial bridge
+    hw.flashLightPin(Pin::ONBOARD_LED, 3, 200);
+
+    // begin the actual other hardware
     hw.begin(10);
 
-
     Serial.println("AEROLAP SYSTEM ACTIVE");
-    Serial.print(deviceModeToString(currentMode).c_str());
-    Serial.println(" MODE ACTIVE");
+
+    // startup sequence
+    // hw.startupSequence();
 }
 
 void loop() {
@@ -87,7 +85,7 @@ void handleFlightLoop() {
                 updateFlightHardware();
 
                 // toggle onboard whenever packet comes (will look like its flashing quickly if wokring)
-                digitalWrite(Pin::ONBOARD_LED, !digitalRead(Pin::ONBOARD_LED));
+                // digitalWrite(Pin::ONBOARD_LED, !digitalRead(Pin::ONBOARD_LED));
             }
         } else {
             // bypass, useless doesnt match
