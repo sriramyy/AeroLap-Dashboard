@@ -19,6 +19,11 @@ void BaseHardware::begin(uint8_t ledBrightness) {
     pinMode(Pin::CENTER_DIO, OUTPUT);
     pinMode(Pin::RIGHT_DIO, OUTPUT);
 
+    // set rotary encoder and button pins
+    pinMode(Pin::ENCODER_CLK, INPUT);
+    pinMode(Pin::ENCODER_DT, INPUT);
+    pinMode(Pin::BUTTON_1, INPUT_PULLUP); // TODO: confirm if pullup or pulldown is needed
+
     // clear
     digitalWrite(Pin::SCLK, LOW);
     digitalWrite(Pin::RCLK, LOW);

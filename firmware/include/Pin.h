@@ -21,6 +21,13 @@ namespace Pin {
     constexpr uint8_t LEFT_DIO   = 26;
     constexpr uint8_t CENTER_DIO = 25;
     constexpr uint8_t RIGHT_DIO  = 33;
+
+    // rotary encoder
+    constexpr uint8_t ENCODER_CLK = 32; // TODO: find the actual pins
+    constexpr uint8_t ENCODER_DT  = 15; // TODO: find the actual pins
+
+    // button for individual uses within each dashboard mode
+    constexpr uint8_t BUTTON_1 = 4; // TODO: find the actual pins
 }
 
 #endif

@@ -64,6 +64,25 @@ The `BaseHardware` class acts as the **Hardware Abstraction Layer (HAL)**. It ma
 | **6** | **Parking Brake** | **Red**: Parking brake is engaged |
 | **7** | **Data Heartbeat** | **Blue Blink**: Valid telemetry packet received |
 
+#### 7-segment Displays
+The board features three 4-digit 7-segment displays. In flight mode, they are configured to be the following:
+* LEFT Display - **Airspeed** (knots)
+* CENTER Display - Currently modifying setting (See below)
+* RIGHT Display - **Altitude** (ft, where 3,500 ft -> 3.50 k ft)
+
+The center display works in conjunction with a **rotary encoder** and a **button** to be able to modify various settings in the airplane (mostly autopilot settings), this gives more granular control over settings that require it.
+\
+The goal is to be able to use the button to select a setting to configure, seen by the leftmost digit of the 7-segment display (see the key below), then the other digits show the current value of that field. There are also display-only fields, marked with **(D)**, that can be switched to using the button for the center display.
+| Setting | Index 0 Key | Value Range | Change Delta | Display Example (1+3) |
+| :--- | :--- | :--- | :--- | :--- |
+| Autopilot Heading | H | 0-360 degrees | 1 | H250 |
+| Autopilot Altitude | A | 0-x ft | 500 | A035 -> 3,500 ft , A100 -> 10,000 ft |
+| Autopilot Speed | S | 0-x knots | 25 | S200 |
+| (D) Flap | F | 0-~4 | N/A | F  4 |
+
+*change delta means one click of the rotary encoder changes the value by x*
+
+
 ### FlightTelemetry
 The `FlightTelemetry` class manages the communication contract between the Python Bridge and the ESP32.
 
