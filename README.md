@@ -1,6 +1,6 @@
 # AeroLap Dashboard ✈️🏎️
 
-**AeroLap** is a high-performance, dual-purpose telemetry dashboard designed for flight simulators and racing titles. By bridging real-time simulation data to an ESP32-powered hardware interface, AeroLap provides a tactile, "glanceable" dashboard system and digital instrument cluster for immersive gameplay.
+**AeroLap** is an intelligent, high-performance telemetry engine and embedded dashboard system, bridging real-time simulation data via an ESP32 to enhance **flight** and **racing** immersion through hardware interfaces. The platform integrates local machine learning **Edge AI** model, including a **TinyML model** for predictive stall warnings and an intelligent flight phase engine that drives physical annunciator alerts and digital instruments.
 
 _TODO: fix some technical mismatches bw code and readme_
 ## 🚀 Overview
@@ -25,6 +25,7 @@ _Implemented primarily for **FSX** using FSUIPC for bridging telemetry_
 * **Phase-of-Flight Logic:** Automated "Minimums" alerting based on Radio Altitude (AGL) and Autopilot state tracking.
 * **Digital Gauges:** Triple 7-segment displays for real-time Airspeed, Altitude, and Flap Position.
 * **Autopilot Adjustment:** (In development) Be able to change the state/position of the autopilot with rotary encoder (continious potentiameter) inputs.
+* **Edge AI Predictive Flight Engineer**: Evaluates multi-variable physics patterns utilizing an onboard EdgeAI machine learning model in real-time to alert you to an aerodynamic stall before instrument alarms sound
 
 ### Racing Mode (In Development)
 _Implemented primarily for **Assetto Corsa** using a direct serial connection for bridging telemetry_
