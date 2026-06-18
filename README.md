@@ -1,6 +1,8 @@
-# AeroLap Dashboard ✈️🏎️
+# KarmanCore Dashboard ✈️🏎️
 
-**AeroLap** is an intelligent, high-performance telemetry engine and embedded dashboard system, bridging real-time simulation data via an ESP32 to enhance **flight** and **racing** immersion through hardware interfaces. The platform integrates local machine learning **Edge AI** model, including a **TinyML model** for predictive stall warnings and an intelligent flight phase engine that drives physical annunciator alerts and digital instruments.
+**KarmanCore** is an intelligent, high-performance aerospace telemetry engine and embedded dashboard system. It bridges real-time simulation data from atmospheric flight simulators (MSFS/FSX) to orbital spaceflights (Kerbal Space Program) using a multi-node ESP32 architecture. 
+
+The platform integrates on-chip **Edge AI** (TinyML) to serve as a virtual flight engineer—processing complex data streams locally to deliver predictive aerodynamic stall warnings, vehicle state classification, and intelligent flight-phase detection that drives physical annunciator alerts and digital instrumentation.
 
 _TODO: fix some technical mismatches bw code and readme_
 ## 🚀 Overview
