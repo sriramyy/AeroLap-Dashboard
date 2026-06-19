@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 4.1)
-project(AeroLap)
+project(esp_core)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(AeroLap src/main.cpp
+add_executable(esp_core src/main.cpp
         src/FlightTelemetry.cpp
         include/FlightTelemetry.h
         src/RacingTelemetry.cpp
