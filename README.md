@@ -4,7 +4,7 @@
 
 The platform integrates on-chip **Edge AI** (TinyML) to serve as a virtual flight engineer—processing complex data streams locally to deliver predictive aerodynamic stall warnings, vehicle state classification, and intelligent flight-phase detection that drives physical annunciator alerts and digital instrumentation.
 
-_TODO: fix some technical mismatches bw code and readme_
+_NOTE: rest of readme has not been updated from the AeroLap (old) readme!_
 ## 🚀 Overview
 
 The project consists of two primary components:
